@@ -58,43 +58,56 @@ class _SchemeNotificationScreenState extends State<SchemeNotificationScreen> {
       elevation: 4,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (image.isNotEmpty)
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Image.network(
-                image,
-                height: 180,
-                width: double.infinity,
-                fit: BoxFit.cover,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (image.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  image,
+                  height: 100,
+                  width: 180,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Added on: ${lastUpdated.split('T').first} ${lastUpdated.split('T').last.split('.')[0]}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Text("Added on: ${lastUpdated.split('T').first} ${lastUpdated.split('T').last.split('.')[0]}",
-                    style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Scheme Notifications'),
+        title: const Text('New Scheme Notifications',style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.deepPurple,
+
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

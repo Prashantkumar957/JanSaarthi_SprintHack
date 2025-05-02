@@ -494,7 +494,7 @@ class _DashboardState extends State<Dashboard> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => JanSarrthiApp()),
+                              MaterialPageRoute(builder: (_) => ContactMePage()),
                             );
                           },
                         ),
