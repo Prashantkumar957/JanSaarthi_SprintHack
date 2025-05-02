@@ -501,7 +501,7 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>EligibleSchemesScreen()));
                         },
                         child: Text(
                           l10n.viewAll,
