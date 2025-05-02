@@ -7,11 +7,11 @@ import 'package:jan_saarthi/Pages/Calendar.dart';
 import 'package:jan_saarthi/Pages/Contact%20Us.dart';
 import 'package:jan_saarthi/Pages/Eligible%20Schemes.dart';
 import 'package:jan_saarthi/Pages/Eligible Schemes.dart';
-
 import 'package:jan_saarthi/Pages/GeminiVoiceChatPage.dart';
 import 'package:jan_saarthi/Pages/user%20profile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../main.dart';
+import 'SchemeNotificationScreen.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -409,7 +409,7 @@ class _DashboardState extends State<Dashboard> {
                   Row(
                     children: [
                       Expanded(
-                        child: _buildStatCard(l10n.schemes, "12",
+                        child: _buildStatCard(l10n.schemes, "20",
                             Icons.assignment, const Color(0xFF3366FF)),
                       ),
                       const SizedBox(width: 12),
@@ -419,9 +419,24 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: _buildStatCard(l10n.alerts, "1",
-                            Icons.notifications, Colors.orange),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>  SchemeNotificationScreen(),
+                              ),
+                            );
+                          },
+                          child: _buildStatCard(
+                            l10n.alerts,
+                            "Updates",
+                            Icons.notifications,
+                            Colors.orange,
+                          ),
+                        ),
                       ),
+
                     ],
                   ),
                   const SizedBox(height: 28),
