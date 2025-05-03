@@ -4,9 +4,9 @@ Jan Saarthi is an AI-powered multilingual mobile + web platform built to bridge 
 
 ## 🌐 Live Project Links
 
-- 📱 **YouTube Demo**: [Watch Now](https://youtu.be/1JHA2vODo64)
+- 📱 **YouTube Demo**: [Watch Now]https://youtu.be/sa31zNK7wcw
 - 📱 **App Download Link**= (https://drive.google.com/file/d/1SBcbyZDuNCqHPtlTvJcYPb9NznmHiiXk/view?usp=sharing)
-- 📱 **Web Portal github repo=**= https://github.com/NipunGoel02/adminpanel
+- 📱 **Web Portal github repo=**= https://github.com/NipunGoel02/adminpanel_sprint
 
 
 ![Untitled design (5)](https://github.com/user-attachments/assets/91a294e2-9626-47c9-9e2d-402861608a39)
