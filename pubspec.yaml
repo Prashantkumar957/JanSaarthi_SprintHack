@@ -45,7 +45,12 @@ dependencies:
   url_launcher:
   provider:
   razorpay_flutter:
-
+  pdf:
+  printing:
+  open_file:
+  image_picker:
+  path_provider:
+  google_fonts:
   shared_preferences:
   firebase_database:
   timeline_tile: ^2.0.0

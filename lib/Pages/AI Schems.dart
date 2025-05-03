@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:jan_saarthi/Pages/user%20profile.dart';
-
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw; // 'pw' prefix avoids naming conflicts
+import 'package:printing/printing.dart'; // For PDF sharing/printing
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -260,6 +264,161 @@ class _EligibleSchemesOnlyScreenState extends State<EligibleSchemesOnlyScreen> {
       },
     );
   }
+  Future<void> _generateApplicationPDF(Map<String, dynamic> scheme) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final userDoc = await FirebaseFirestore.instance
+        .collection('Posts')
+        .doc(user!.uid)
+        .get();
+    final userData = userDoc.data() as Map<String, dynamic>;
+
+    final pdf = pw.Document();
+    final currentDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+
+    pdf.addPage(
+      pw.Page(
+        margin: const pw.EdgeInsets.all(30),
+        build: (pw.Context context) => pw.Column(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          children: [
+            // Header with Logo (Placeholder - replace with your actual logo)
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Text(
+                  'JanSaarthi ',
+                  style: pw.TextStyle(
+                    fontSize: 24,
+                    fontWeight: pw.FontWeight.bold,
+                    color: PdfColors.teal800,
+                  ),
+                ),
+                pw.Text(
+                  'Application Form',
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    color: PdfColors.grey600,
+                  ),
+                ),
+              ],
+            ),
+            pw.SizedBox(height: 30),
+
+            // Section Headers with improved styling
+            _buildSectionTitle('Applicant Information'),
+            pw.SizedBox(height: 10),
+            _buildDetailRow('Full Name:', userData['username'] ?? 'N/A'),
+            _buildDetailRow('Age:', '${userData['age'] ?? 'N/A'} years'),
+            _buildDetailRow('Citizen ID:', userData['id'] ?? 'N/A'),
+            _buildDetailRow('Income:', '₹${userData['income'] ?? 'N/A'}'),
+            _buildDetailRow('State:', userData['state'] ?? 'N/A'),
+            pw.Divider(thickness: 0.7),
+            pw.SizedBox(height: 15),
+
+            _buildSectionTitle('Scheme Information'),
+            pw.SizedBox(height: 10),
+            _buildDetailRow('Scheme Title:', scheme['title'] ?? 'N/A'),
+            pw.Paragraph(text: 'Description: ${scheme['description'] ?? 'N/A'}'),
+            pw.SizedBox(height: 5),
+            _buildDetailRow('Eligibility Age:', '${scheme['minAge']}-${scheme['maxAge']} years'),
+            _buildDetailRow('Eligible Gender:', scheme['gender'] ?? 'All'),
+            pw.Divider(thickness: 0.7),
+            pw.SizedBox(height: 15),
+
+            _buildSectionTitle('Required Documents (Attach Copies)'),
+            pw.SizedBox(height: 10),
+            pw.Bullet(text: 'Aadhaar Card : as proof of identity and residence'),
+            pw.Bullet(text: 'PAN Card : for income verification (if applicable)'),
+            pw.Bullet(text: 'Bank Passbook (First Page) : to validate bank account details'),
+            pw.Bullet(text: 'Income Certificate : issued by a competent authority'),
+            pw.Bullet(text: 'Domicile Certificate : proving permanent residence in the state'),
+            pw.Bullet(text: 'Recent Passport-sized Photographs (2 copies)'),
+            pw.Bullet(text: 'Self-Declaration Form : declaring that all submitted information is true'),
+            pw.Bullet(text: 'Caste Certificate : for reserved category applicants (if applicable)'),
+            pw.Bullet(text: 'Educational Qualification Proof : last qualifying exam marksheet or certificate'),
+
+            pw.SizedBox(height: 40),
+
+            // Signature Area
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('Applicant Signature:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.SizedBox(height: 5),
+                    pw.Container(
+                      width: 150,
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(bottom: pw.BorderSide()),
+                      ),
+                      child: pw.Text(userData['username'] ?? ' ', textAlign: pw.TextAlign.center),
+                    ),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('Date:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.SizedBox(height: 5),
+                    pw.Text(currentDate),
+                  ],
+                ),
+              ],
+            ),
+
+            pw.Spacer(),
+
+            // Footer with a bit more style
+            pw.Center(
+              child: pw.Text(
+                'Empowering Communities through Information',
+                style: pw.TextStyle(
+                  fontSize: 10,
+                  fontStyle: pw.FontStyle.italic,
+                  color: PdfColors.grey500,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    await Printing.sharePdf(bytes: await pdf.save());
+  }
+
+// Reusable widget for section titles
+  pw.Widget _buildSectionTitle(String title) {
+    return pw.Text(
+      title,
+      style: pw.TextStyle(
+        fontSize: 18,
+        fontWeight: pw.FontWeight.bold,
+        color: PdfColors.blueGrey800,
+        decoration: pw.TextDecoration.underline,
+      ),
+    );
+  }
+
+// Reusable widget for detail rows
+  pw.Widget _buildDetailRow(String label, String value) {
+    return pw.Padding(
+      padding: const pw.EdgeInsets.only(bottom: 5),
+      child: pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        children: [
+          pw.SizedBox(
+            width: 120,
+            child: pw.Text(label, style:  pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+          ),
+          pw.Expanded(child: pw.Text(value)),
+        ],
+      ),
+    );
+  }
+
 
 
   @override
@@ -352,13 +511,28 @@ class _EligibleSchemesOnlyScreenState extends State<EligibleSchemesOnlyScreen> {
                         const SizedBox(height: 12),
                         if (scheme['pdfLink'] != null)
                           ElevatedButton.icon(
+
                             onPressed: () =>
                                 _launchURL(scheme['pdfLink']),
                             icon: const Icon(Icons.download, color: Colors.white,),
-                            label: const Text("Download PDF/ Apply For Scheme", style: TextStyle(color: Colors.white),),
+
+                            label: const Text("See Detailed Information Of Scheme", style: TextStyle(color: Colors.white,),),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.deepPurple),
                           ),
+                        Center(
+                          child: ElevatedButton.icon(
+                            onPressed: () => _generateApplicationPDF(scheme),
+
+                            icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+                            label: const Text("Generate Application", style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red[700],
+
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                          ),
+                        ),
                         if (scheme['applyLink'] != null)
                           OutlinedButton.icon(
                             onPressed: () =>

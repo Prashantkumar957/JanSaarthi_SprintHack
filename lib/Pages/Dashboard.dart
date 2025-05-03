@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'user_documents_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:jan_saarthi/Authentication/Authentication.dart';
@@ -298,7 +299,18 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
+        // In the Dashboard's AppBar, replace the logout button with:
         actions: [
+          IconButton(
+            icon: const Icon(Icons.document_scanner, color: Colors.white),
+            tooltip: 'Documents',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) =>  UserDocumentsScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             tooltip: 'Logout',
