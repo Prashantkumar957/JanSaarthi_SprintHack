@@ -2,7 +2,7 @@
 
 Jan Saarthi is an AI-powered multilingual mobile + web platform built to bridge the gap between the Indian population and government/private schemes. Developed under the theme **"AI for Bharat"**, our project empowers individuals to discover and apply for welfare schemes with ease, eliminating barriers of language, awareness, and digital complexity.
 
-## 🌐 Live Project Links
+## 🌐 Live Project Links 
 
 - 📱 **YouTube Demo**: [Watch Now]https://youtu.be/sa31zNK7wcw
 - 📱 **App Download Link**= (https://drive.google.com/file/d/1SBcbyZDuNCqHPtlTvJcYPb9NznmHiiXk/view?usp=sharing)
