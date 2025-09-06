@@ -18,12 +18,9 @@ Jan Saarthi is an AI-powered multilingual mobile + web platform built to bridge 
 
 ---
 
-## 👥 Team CodeVision
 
-- 🧑‍💼 **Prashant Kumar** – Team Leader, Flutter App Developer  
-- 🌐 **Nipun Goel** – Web Portal Developer & Backend Logic  
-- 💡 **Harshit Jain** – Web Portal & Business Strategist
--  🌐 **Web Portal**: [Visit Admin Panel](https://admin-panel-qbdp.onrender.com/)
+
+- 
 - 💻 **GitHub Repo**: [Jan Saarthi Repository](https://github.com/Prashantkumar957/Jan_Saarthi)
 
 ---
